@@ -1,0 +1,36 @@
+{% extends 'agendamento/base.html' %}
+{% block titulo %}Agenda do salão{% endblock %}
+
+{% block conteudo %}
+<div class="cabecalho">
+    <div>
+        <h1>Agenda</h1>
+        <p class="subtitulo">Todos os agendamentos, organizados por dia.</p>
+    </div>
+    <a class="botao" href="{% url 'novo_agendamento' %}">Novo agendamento</a>
+</div>
+
+{% regroup agendamentos by data as dias %}
+{% for dia in dias %}
+<section class="dia">
+    <h2>{{ dia.grouper|date:"l, j \d\e F" }}</h2>
+    <ul class="agenda">
+        {% for a in dia.list %}
+        <li class="item item--{{ a.status }}">
+            <time class="hora">{{ a.hora|time:"H:i" }}</time>
+            <div class="detalhe">
+                <strong>{{ a.cliente }}</strong>
+                <span>{{ a.servico.nome }} com {{ a.profissional }}</span>
+            </div>
+            <span class="selo selo--{{ a.status }}">{{ a.get_status_display }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+{% empty %}
+<div class="vazio">
+    <p>Nenhum agendamento ainda.</p>
+    <a class="botao" href="{% url 'novo_agendamento' %}">Criar o primeiro agendamento</a>
+</div>
+{% endfor %}
+{% endblock %}

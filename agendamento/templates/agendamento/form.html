@@ -1,0 +1,17 @@
+{% extends 'agendamento/base.html' %}
+{% block titulo %}Novo agendamento{% endblock %}
+
+{% block conteudo %}
+<h1>Novo agendamento</h1>
+<p class="subtitulo">Escolha o cliente, o serviço, o profissional e o horário.</p>
+
+<form method="post" class="cartao">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {{ form.as_p }}
+    <div class="acoes">
+        <button type="submit" class="botao">Agendar</button>
+        <a class="botao botao--secundario" href="{% url 'lista_agendamentos' %}">Voltar para a agenda</a>
+    </div>
+</form>
+{% endblock %}
